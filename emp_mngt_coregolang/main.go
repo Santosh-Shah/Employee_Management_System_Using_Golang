@@ -26,7 +26,8 @@ func main() {
 		fmt.Println("2. Get Employee")
 		fmt.Println("3. Update Employee")
 		fmt.Println("4. Delete Employee")
-		fmt.Println("5. Exit")
+		fmt.Println("5. Get All Employees")
+		fmt.Println("6. Exit")
 
 		option := readInput("Enter option: ")
 
@@ -40,6 +41,8 @@ func main() {
 		case "4":
 			deleteEmployee()
 		case "5":
+			getAllEmployees()
+		case "6":
 			fmt.Println("Exiting...")
 			os.Exit(0)
 		default:
@@ -57,6 +60,14 @@ func readInput(prompt string) string {
 
 func createEmployee() {
 	userID, _ := strconv.Atoi(readInput("Enter userID: "))
+	// Check if employee with same userID already exists
+	for _, emp := range employees {
+		if emp.UserID == userID {
+			fmt.Println("Employee with same userID already exists!")
+			return
+		}
+	}
+
 	fullname := readInput("Enter fullname: ")
 	username := readInput("Enter username: ")
 	password := readInput("Enter password: ")
@@ -125,4 +136,16 @@ func deleteEmployee() {
 	}
 
 	fmt.Println("Employee not found!")
+}
+
+func getAllEmployees() {
+	fmt.Println("All Employees:")
+	for _, emp := range employees {
+		fmt.Printf("User ID: %d\n", emp.UserID)
+		fmt.Printf("Fullname: %s\n", emp.Fullname)
+		fmt.Printf("Username: %s\n", emp.Username)
+		fmt.Printf("Phone: %s\n", emp.Phone)
+		fmt.Printf("Email: %s\n", emp.Email)
+		fmt.Println("-------------------")
+	}
 }
