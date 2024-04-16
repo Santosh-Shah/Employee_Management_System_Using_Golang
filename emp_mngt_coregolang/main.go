@@ -60,6 +60,7 @@ func readInput(prompt string) string {
 
 func createEmployee() {
 	userID, _ := strconv.Atoi(readInput("Enter userID: "))
+
 	// Check if employee with same userID already exists
 	for _, emp := range employees {
 		if emp.UserID == userID {
@@ -70,9 +71,26 @@ func createEmployee() {
 
 	fullname := readInput("Enter fullname: ")
 	username := readInput("Enter username: ")
+
+	// Check if employee with same username already exists
+	for _, emp := range employees {
+		if emp.Username == username {
+			fmt.Println("Employee with same username already exists!")
+			return
+		}
+	}
+
 	password := readInput("Enter password: ")
 	phone := readInput("Enter phone: ")
 	email := readInput("Enter email: ")
+
+	// Check if employee with same email already exists
+	for _, emp := range employees {
+		if emp.Email == email {
+			fmt.Println("Employee with same email already exists!")
+			return
+		}
+	}
 
 	employee := &Employee{
 		UserID:   userID,
