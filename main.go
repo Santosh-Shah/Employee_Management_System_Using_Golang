@@ -1,69 +1,72 @@
 package main
 
-import (
-	"github.com/gin-gonic/gin"
-	"net/http"
-)
-
-// Album represents data about a record album.
-type Album struct {
-	ID     string  `json:"id"`
-	Title  string  `json:"title"`
-	Artist string  `json:"artist"`
-	Price  float64 `json:"price"`
-}
-
-var albums = []Album{
-	{ID: "1", Title: "Nepali Album1", Artist: "Kamal khatri", Price: 56000.99},
-	{ID: "2", Title: "Nepali Album2", Artist: "Kamal Chhetri", Price: 17000.99},
-	{ID: "3", Title: "Nepali Album3", Artist: "Unknown Singer", Price: 390000.99},
-}
-
-func main() {
-	router := gin.Default()
-
-	// Define routes
-	router.GET("/albums", getAlbums)
-	router.GET("/albums/:id", getAlbumByID)
-	router.POST("/albums", addAlbum)
-
-	// Start server
-	router.Run("localhost:8080")
-}
-
-// Handler to get all albums
-func getAlbums(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, albums)
-}
-
-// Handler to get a specific album by ID
-func getAlbumByID(c *gin.Context) {
-	id := c.Param("id")
-
-	for _, album := range albums {
-		if album.ID == id {
-			c.IndentedJSON(http.StatusOK, album)
-			return
-		}
-	}
-
-	// If album with specified ID is not found
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
-}
-
-// Handler to add a new album
-func addAlbum(c *gin.Context) {
-	var newAlbum Album
-
-	// Bind the JSON request body to newAlbum
-	if err := c.BindJSON(&newAlbum); err != nil {
-		c.AbortWithStatus(http.StatusBadRequest)
-		return
-	}
-
-	// Add the new album to the albums slice
-	albums = append(albums, newAlbum)
-
-	// Return the newly added album
-	c.IndentedJSON(http.StatusCreated, newAlbum)
-}
+//import (
+//	"database/sql"
+//	"fmt"
+//	"log"
+//
+//	_ "github.com/go-sql-driver/mysql"
+//)
+//
+//type Employee struct {
+//	UserID   int
+//	Fullname string
+//	Username string
+//	Password string
+//	Phone    string
+//	Email    string
+//}
+//
+//func main() {
+//	// Connect to the MySQL database
+//	db, err := sql.Open("mysql", "root:@Mysql_679#@tcp(localhost:3306)/employees")
+//	if err != nil {
+//		log.Fatal("Error connecting to database:", err)
+//	}
+//	defer db.Close()
+//
+//	// Prompt user for employee details
+//	var employee Employee
+//	fmt.Println("Enter employee details:")
+//	fmt.Print("UserID: ")
+//	fmt.Scan(&employee.UserID)
+//	fmt.Print("Fullname: ")
+//	fmt.Scan(&employee.Fullname)
+//	fmt.Print("Username: ")
+//	fmt.Scan(&employee.Username)
+//	fmt.Print("Password: ")
+//	fmt.Scan(&employee.Password)
+//	fmt.Print("Phone: ")
+//	fmt.Scan(&employee.Phone)
+//	fmt.Print("Email: ")
+//	fmt.Scan(&employee.Email)
+//
+//	// Insert employee data into the database
+//	_, err = db.Exec("INSERT INTO employees (userID, fullname, username, password, phone, email) VALUES (?, ?, ?, ?, ?, ?)",
+//		employee.UserID, employee.Fullname, employee.Username, employee.Password, employee.Phone, employee.Email)
+//	if err != nil {
+//		log.Fatal("Error inserting employee data:", err)
+//	}
+//
+//	fmt.Println("Employee data inserted successfully!")
+//
+//	// Query the employees table
+//	rows, err := db.Query("SELECT * FROM employees")
+//	if err != nil {
+//		log.Fatal("Error querying database:", err)
+//	}
+//	defer rows.Close()
+//
+//	// Iterate over the rows
+//	fmt.Println("\nEmployees:")
+//	for rows.Next() {
+//		var employee Employee
+//		if err := rows.Scan(&employee.UserID, &employee.Fullname, &employee.Username, &employee.Password, &employee.Phone, &employee.Email); err != nil {
+//			log.Fatal("Error scanning row:", err)
+//		}
+//		fmt.Printf("User ID: %d, Fullname: %s, Username: %s, Phone: %s, Email: %s\n", employee.UserID, employee.Fullname, employee.Username, employee.Phone, employee.Email)
+//	}
+//	if err := rows.Err(); err != nil {
+//		log.Fatal("Error iterating over rows:", err)
+//	}
+//}
